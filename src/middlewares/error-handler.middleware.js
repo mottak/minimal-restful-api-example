@@ -7,6 +7,9 @@ const errorHandlerMiddleware = (err, _, res, next) => {
     case 'ValidationError':
       res.status(400).json({ message: details[0].message })
       break
+    case 'NotFoundError':
+      res.status(404).json({ message })
+      break
     default:
       logger.error({ name, message })
       res.status(500).json({ message })
