@@ -1,0 +1,26 @@
+{
+  // editor
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnType": true,
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [
+    80,
+    120,
+    160
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  // typescript
+  "typescript.format.enable": false,
+  "typescript.suggestionActions.enabled": true,
+  // javascript
+  "javascript.suggestionActions.enabled": false,
+  // thunder-client
+  "thunder-client.loadFromProject": true
+}
