@@ -21,6 +21,18 @@ const invalidNameNewUser = {
   "password": "123456"
 }
 
+const invalidNoNameNewUser = {
+  "email": "ze@gmail.com",
+  "photoURL": "UrlImage",
+  "password": "123456"
+}
+
+const invalidemailNewUser = {
+  "displayName": "Zé",
+  "email": "ze@gmail.com",
+  "photoURL": "UrlImage",
+  "password": "123456"
+}
 
 
 const mockUserValidate = (newUser) => {
@@ -38,5 +50,7 @@ module.exports = {
   mockUserValidate,
   mockUserService,
   validNewUser,
-  invalidNameNewUser
+  invalidNameNewUser,
+  invalidNoNameNewUser,
+  invalidemailNewUser
 }
