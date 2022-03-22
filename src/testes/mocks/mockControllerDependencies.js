@@ -29,7 +29,13 @@ const invalidNoNameNewUser = {
 
 const invalidemailNewUser = {
   "displayName": "Zé",
-  "email": "ze@gmail.com",
+  "email": "zegmail.com",
+  "photoURL": "UrlImage",
+  "password": "123456"
+}
+
+const invalidNoEmailNewUser = {
+  "displayName": "Zé",
   "photoURL": "UrlImage",
   "password": "123456"
 }
@@ -52,5 +58,6 @@ module.exports = {
   validNewUser,
   invalidNameNewUser,
   invalidNoNameNewUser,
-  invalidemailNewUser
+  invalidemailNewUser,
+  invalidNoEmailNewUser
 }

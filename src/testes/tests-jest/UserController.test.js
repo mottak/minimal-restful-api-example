@@ -6,7 +6,9 @@ const { mockUserValidate,
   mockUserService,
   validNewUser,
   invalidNameNewUser,
-  invalidNoNameNewUser } = require('../mocks/mockControllerDependencies')
+  invalidNoNameNewUser,
+  invalidemailNewUser,
+  invalidNoEmailNewUser } = require('../mocks/mockControllerDependencies')
 
 
 describe('@userController.add - testa criação de novo usuário', () => {
@@ -52,6 +54,30 @@ describe('Testa validações  - @userController.add - userValidation', () => {
     // await expect(goo()).rejects.toThrow();
     await expect(result).rejects.toThrow();
     await expect(result).rejects.toThrowError("\"displayName\" is not allowed to be empty")
+
+
+  })
+  it('Um usuario não é criado, email não informado', async () => {
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invalidemailNewUser);
+
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"email\" must be a valid email")
+
+
+  })
+  it('Um usuario não é criado, displayName invalido', async () => {
+
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invalidNoEmailNewUser);
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"email\" is required")
 
 
   })
