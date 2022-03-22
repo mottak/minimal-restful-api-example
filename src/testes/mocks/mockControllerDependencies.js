@@ -53,6 +53,26 @@ const invalidNoPhotURLNewUser = {
   "password": "123456"
 }
 
+const invalidNumberPasswordNewUser = {
+  "displayName": "Zé",
+  "email": "ze@gmail.com",
+  "photoURL": "UrlImage",
+  "password": 123
+}
+
+const invalidLenghtPasswordNewUser = {
+  "displayName": "Zé",
+  "email": "ze@gmail.com",
+  "photoURL": "UrlImage",
+  "password": "123"
+}
+
+const invaliNoPasswordNewUser = {
+  "displayName": "Zé",
+  "email": "ze@gmail.com",
+  "photoURL": "UrlImage",
+
+}
 
 const mockUserValidate = (newUser) => {
 
@@ -74,5 +94,8 @@ module.exports = {
   invalidemailNewUser,
   invalidNoEmailNewUser,
   invaliphotoURLNewUser,
-  invalidNoPhotURLNewUser
+  invalidNoPhotURLNewUser,
+  invalidNumberPasswordNewUser,
+  invaliNoPasswordNewUser,
+  invalidLenghtPasswordNewUser
 }

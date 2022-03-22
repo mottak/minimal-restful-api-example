@@ -10,7 +10,10 @@ const { mockUserValidate,
   invalidemailNewUser,
   invalidNoEmailNewUser,
   invaliphotoURLNewUser,
-  invalidNoPhotURLNewUser } = require('../mocks/mockControllerDependencies')
+  invalidNoPhotURLNewUser,
+  invalidNumberPasswordNewUser,
+  invaliNoPasswordNewUser,
+  invalidLenghtPasswordNewUser } = require('../mocks/mockControllerDependencies')
 
 
 describe('@userController.add - testa criação de novo usuário', () => {
@@ -104,6 +107,43 @@ describe('Testa validações  - @userController.add - userValidation', () => {
 
     await expect(result).rejects.toThrow();
     await expect(result).rejects.toThrowError("\"photoURL\" is not allowed to be empty")
+
+
+  })
+
+  it('Um usuario não é criado, password não informado', async () => {
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invaliNoPasswordNewUser);
+
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"password\" is required")
+
+
+  })
+  it('Um usuario não é criado, password invalido, informando numeros', async () => {
+
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invalidNumberPasswordNewUser);
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"password\" must be a string")
+
+
+  })
+  it('Um usuario não é criado, password invalido, tamanho menor que 6 caracteres', async () => {
+
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invalidLenghtPasswordNewUser);
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"password\" length must be at least 6 characters long")
 
 
   })
