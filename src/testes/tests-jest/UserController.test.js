@@ -8,7 +8,9 @@ const { mockUserValidate,
   invalidNameNewUser,
   invalidNoNameNewUser,
   invalidemailNewUser,
-  invalidNoEmailNewUser } = require('../mocks/mockControllerDependencies')
+  invalidNoEmailNewUser,
+  invaliphotoURLNewUser,
+  invalidNoPhotURLNewUser } = require('../mocks/mockControllerDependencies')
 
 
 describe('@userController.add - testa criação de novo usuário', () => {
@@ -57,7 +59,7 @@ describe('Testa validações  - @userController.add - userValidation', () => {
 
 
   })
-  it('Um usuario não é criado, email não informado', async () => {
+  it('Um usuario não é criado, email invalido', async () => {
 
     jest.fn(userValidation.bodyAdd)
 
@@ -69,7 +71,7 @@ describe('Testa validações  - @userController.add - userValidation', () => {
 
 
   })
-  it('Um usuario não é criado, displayName invalido', async () => {
+  it('Um usuario não é criado, email não informado', async () => {
 
 
     jest.fn(userValidation.bodyAdd)
@@ -78,6 +80,30 @@ describe('Testa validações  - @userController.add - userValidation', () => {
 
     await expect(result).rejects.toThrow();
     await expect(result).rejects.toThrowError("\"email\" is required")
+
+
+  })
+  it('Um usuario não é criado, photoURL não informado', async () => {
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invalidNoPhotURLNewUser);
+
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"photoURL\" is required")
+
+
+  })
+  it('Um usuario não é criado, photoURL invalido', async () => {
+
+
+    jest.fn(userValidation.bodyAdd)
+
+    const result = userValidation.bodyAdd(invaliphotoURLNewUser);
+
+    await expect(result).rejects.toThrow();
+    await expect(result).rejects.toThrowError("\"photoURL\" is not allowed to be empty")
 
 
   })
