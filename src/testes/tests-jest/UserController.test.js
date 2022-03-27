@@ -2,8 +2,8 @@
 const { usersController } = require('../../controllers/')
 const { usersService } = require('../../services')
 const { userValidation } = require('../../validations')
-const { mockUserValidate,
-  mockUserService,
+const { mockUserValidate, mockUserServiceCreate } = require('../mocks/mockControllerCreateUser')
+const { validUser,
   validNewUser,
   invalidNameNewUser,
   invalidNoNameNewUser,
@@ -13,15 +13,22 @@ const { mockUserValidate,
   invalidNoPhotURLNewUser,
   invalidNumberPasswordNewUser,
   invaliNoPasswordNewUser,
-  invalidLenghtPasswordNewUser } = require('../mocks/mockControllerDependencies')
+  invalidLenghtPasswordNewUser } = require('../mocks/newUsersMock')
+
+const { mockUserServiceList, mockUserServiceListNoUsers } = require('../mocks/mockControllerListUsers');
+
+// const { deleteUser, mockDeleteUser } = require('../mocks/mockControllerDeleteUser');
 
 
 describe('@userController.add - testa criação de novo usuário', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
   it('Um usuario é criado com sucesso', async () => {
     // https://archive.jestjs.io/docs/pt-br/22.x/mock-function-api#mockfnmockresolvedvaluevalue
     // dentro do fn eu informo qual a função eu to mockando
     // dentro de mockResolvedValue coloco a função mockada
-    jest.fn(usersService.add).mockResolvedValue(mockUserService(validNewUser))
+    jest.fn(usersService.add).mockResolvedValue(mockUserServiceCreate(validNewUser))
     jest.fn(userValidation.bodyAdd).mockResolvedValue(mockUserValidate(validNewUser))
 
     const result = await usersController.add(validNewUser)
@@ -29,11 +36,12 @@ describe('@userController.add - testa criação de novo usuário', () => {
     expect(result).not.toBeNull()
     expect(result).toHaveProperty('_id');
   })
-
-
 })
 
 describe('Testa validações  - @userController.add - userValidation', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
   it('Um usuario não é criado, displayName não informado', async () => {
     // https://dev.to/dotmendes/testando-lancamento-de-excecoes-com-jest-4p8c
 
@@ -146,5 +154,34 @@ describe('Testa validações  - @userController.add - userValidation', () => {
     await expect(result).rejects.toThrowError("\"password\" length must be at least 6 characters long")
 
 
+  })
+})
+
+describe('@userController.list - testa listar todos os usuarios', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('Usuarios listados com sucesso - nenhum usuario salvo', async () => {
+    jest.spyOn(usersService, 'list').mockImplementation(() => [])
+    const resultList = await usersController.list()
+
+    expect(resultList).toMatchObject([])
+
+  })
+  it('Usuarios listados com sucesso', async () => {
+    jest.spyOn(usersService, 'add').mockImplementationOnce(() => mockUserServiceCreate(validNewUser))
+    jest.spyOn(userValidation, 'bodyAdd').mockImplementationOnce(() => mockUserValidate(validNewUser))
+    await usersController.add(validNewUser)
+
+
+    jest.spyOn(usersService, 'list').mockResolvedValue(mockUserServiceList())
+
+    const resultList = await usersController.list()
+
+
+    expect(resultList).toMatchObject([validUser])
+    expect(resultList.length).not.toBe(0)
   })
 })

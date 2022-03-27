@@ -21,6 +21,5 @@
   "typescript.suggestionActions.enabled": true,
   // javascript
   "javascript.suggestionActions.enabled": false,
-  // thunder-client
-  "thunder-client.loadFromProject": true
+  "thunder-client.saveToWorkspace": true
 }
