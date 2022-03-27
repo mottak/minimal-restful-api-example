@@ -8,7 +8,6 @@ const usersController = {
     return result
   },
   enable: async (params) => {
-    console.log("enable - params ---->", params)
     const { id } = await userValidation.paramId(params)
 
     const result = await usersService.enable(id)

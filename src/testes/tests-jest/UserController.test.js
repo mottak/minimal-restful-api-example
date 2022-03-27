@@ -15,7 +15,7 @@ const { validUser,
   invaliNoPasswordNewUser,
   invalidLenghtPasswordNewUser } = require('../mocks/newUsersMock')
 
-const { mockUserServiceList, mockUserServiceListNoUsers } = require('../mocks/mockControllerListUsers');
+const { mockUserServiceList, verifyUser, mockUserNotFound } = require('../mocks/mockControllerListUsers');
 
 // const { deleteUser, mockDeleteUser } = require('../mocks/mockControllerDeleteUser');
 
@@ -24,6 +24,11 @@ describe('@userController.add - testa criação de novo usuário', () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('Um usuario é criado com sucesso', async () => {
     // https://archive.jestjs.io/docs/pt-br/22.x/mock-function-api#mockfnmockresolvedvaluevalue
     // dentro do fn eu informo qual a função eu to mockando
@@ -42,6 +47,11 @@ describe('Testa validações  - @userController.add - userValidation', () => {
   afterEach(() => {
     jest.clearAllMocks()
   })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('Um usuario não é criado, displayName não informado', async () => {
     // https://dev.to/dotmendes/testando-lancamento-de-excecoes-com-jest-4p8c
 
@@ -163,6 +173,10 @@ describe('@userController.list - testa listar todos os usuarios', () => {
     jest.clearAllMocks()
   })
 
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
+
   it('Usuarios listados com sucesso - nenhum usuario salvo', async () => {
     jest.spyOn(usersService, 'list').mockImplementation(() => [])
     const resultList = await usersController.list()
@@ -183,5 +197,36 @@ describe('@userController.list - testa listar todos os usuarios', () => {
 
     expect(resultList).toMatchObject([validUser])
     expect(resultList.length).not.toBe(0)
+  })
+})
+
+describe('@userController.get - testa listar usuario especifico', () => {
+
+  beforeAll(async () => {
+    jest.spyOn(usersService, 'add').mockImplementationOnce(() => mockUserServiceCreate(validNewUser))
+    jest.spyOn(userValidation, 'bodyAdd').mockImplementationOnce(() => mockUserValidate(validNewUser))
+    await usersController.add(validNewUser)
+  })
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('Usuario informato listado com sucesso', async () => {
+    jest.spyOn(usersService, 'get').mockImplementationOnce(() => mockUserServiceList())
+    jest.spyOn(userValidation, 'paramId').mockImplementationOnce(() => verifyUser({ id: 1 }))
+
+    const result = await usersController.get()
+
+    expect(result).toMatchObject([validUser])
+
+  })
+  it('Usuario não encontrado', async () => {
+    jest.spyOn(userValidation, 'paramId').mockImplementationOnce(() => verifyUser({ id: 3 }))
+    jest.spyOn(usersService, 'get').mockImplementationOnce(() => mockUserNotFound())
+
+    const result = await usersController.get();
+
+    expect(result).toHaveProperty("message", "not found")
+    expect(result).toHaveProperty("status")
   })
 })
